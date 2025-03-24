@@ -18,7 +18,7 @@ O desafio consiste em implementar **uma aplicação completa (backend + frontend
 ### Funcionalidades
 
 #### Frontend
-1. **Card de Aluno (à direita):**
+- **Card de Aluno (à direita):**
    - Exibe as informações de um aluno, conforme o layout:  
      - Foto  
      - Nome  
@@ -30,13 +30,15 @@ O desafio consiste em implementar **uma aplicação completa (backend + frontend
      - Barra de progresso dos créditos (porcentagem)  
    - O card deve funcionar como um **carrossel**, permitindo a navegação entre diferentes alunos (pelo menos com botões de "próximo" e "anterior").
 
-2. **Lista de Disciplinas (à esquerda):**
+- **Lista de Disciplinas (à esquerda):**
    - Exibe a lista de Disciplinas **associadas ao aluno selecionado no card**.  
    - As informações exibidas devem conter:
      - Código da disciplina  
      - Nome da disciplina
      - Departamento  
      - Créditos  
+
+- Ambos os componentes devem ser responsivos
 
 #### Backend
 - Modelagem das entidades (requisito mínimo):
@@ -59,9 +61,11 @@ O desafio consiste em implementar **uma aplicação completa (backend + frontend
   - Uma **disciplina** pode estar associada a **um ou mais alunos**.
 
 #### Ações no backend (CRUD) pelo frontend
-- Deve haver, no mínimo, uma **ação implementada** (criação, atualização ou remoção) para **Aluno** ou **Disciplina**.  
-- Essa ação deve ser acessível a partir do frontend.
-- Exemplo: um botão de "Deletar aluno" ou "Adicionar disciplina", seguindo o mesmo layout do Figma.
+- Não é obrigatório implementar o CRUD completo das entidades Aluno e Disciplina.
+- O requisito mínimo é:
+    - Implementar a recuperação dos dados (Read) de Aluno e Disciplina, para que as informações sejam exibidas no frontend, conforme o layout do Figma.
+    - Além disso, é necessário implementar pelo menos uma ação adicional do CRUD (Create, Update ou Delete) para Aluno ou Disciplina. Essa ação deve ser acessível no frontend.
+- Exemplo: Um botão de "Deletar aluno", "Adicionar disciplina" ou "Editar aluno", permitindo ao usuário executar a ação diretamente pela interface.
 
 ---
 
@@ -94,7 +98,6 @@ O desafio consiste em implementar **uma aplicação completa (backend + frontend
 ---
 
 ## Diferenciais (não obrigatórios)
-✨ Responsividade no frontend  
 ✨ Testes automatizados no backend e/ou frontend  
 ✨ Implementação de filtros ou paginação na listagem de disciplinas  
 ✨ Criação de um docker-compose.yml para facilitar o deploy e execução da aplicação

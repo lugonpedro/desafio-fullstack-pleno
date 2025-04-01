@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum StudentStatus {
+  ACTIVE
+  GRADUATED
+  INACTIVE
+  ON_LEAVE
+}
+
+model Student {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name         String
+  age          String
+  registration String        @unique
+  gpa          Float
+  status       StudentStatus @default(INACTIVE)
+  grade        Grade[]
+  photo        Image?        @relation(fields: [photo_id], references: [id])
+  photo_id     Int?
+}
+
+model Discipline {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  code      String  @unique
+  name      String
+  total_credits   Int
+  course    Course  @relation(fields: [course_id], references: [id])
+  course_id Int
+  grade     Grade[]
+}
+
+model Grade {
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  student       Student    @relation(fields: [student_id], references: [id], onDelete: Cascade)
+  student_id    Int
+  discipline    Discipline @relation(fields: [discipline_id], references: [id], onDelete: Cascade)
+  discipline_id Int
+  credits       Int        @default(0)
+
+  @@id([student_id, discipline_id])
+}
+
+model Course {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name          String
+  discipline    Discipline[]
+  department    Department   @relation(fields: [department_id], references: [id], onDelete: Cascade)
+  department_id Int
+}
+
+model Department {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name    String
+  courses Course[]
+}
+
+model Image {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name     String
+  type     String
+  size     Float
+  url      String
+  blur_url String
+
+  student Student[]
+}

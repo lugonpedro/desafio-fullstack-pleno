@@ -5,6 +5,7 @@ import { StudentsModule } from './students/students.module';
 import { DisciplinesModule } from './disciplines/disciplines.module';
 import { DepartmentsModule } from './departments/departments.module';
 import { CoursesModule } from './courses/courses.module';
+import { ImageModule } from './@shared/image/image.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { CoursesModule } from './courses/courses.module';
     DisciplinesModule,
     DepartmentsModule,
     CoursesModule,
+    ImageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

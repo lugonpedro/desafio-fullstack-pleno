@@ -119,7 +119,22 @@ describe('StudentsService', () => {
 
   describe('when activating a student', () => {
     it('must activate a student', async () => {
-      // TODO
+      const student = {
+        name: 'John Doe',
+        birth_date: new Date(15, 3, 2000).toISOString(),
+      };
+
+      const createdStudent = await service.create(student);
+
+      const response = await service.activate(
+        createdStudent.registration,
+      );
+
+      expect(response).toMatchObject({
+        ...student,
+        birth_date: expect.any(Date),
+        status: StudentStatus.ACTIVE
+      });
     });
 
     it('must return student not found', async () => {
@@ -129,7 +144,23 @@ describe('StudentsService', () => {
 
   describe('when inactivating a student', () => {
     it('must inactivate a student', async () => {
-      // TODO
+      const student = {
+        name: 'John Doe',
+        birth_date: new Date(15, 3, 2000).toISOString(),
+        status: StudentStatus.ACTIVE
+      };
+
+      const createdStudent = await service.create(student);
+
+      const response = await service.inactivate(
+        createdStudent.registration,
+      );
+
+      expect(response).toMatchObject({
+        ...student,
+        birth_date: expect.any(Date),
+        status: StudentStatus.INACTIVE
+      });
     });
 
     it('must return student not found', async () => {
@@ -141,7 +172,22 @@ describe('StudentsService', () => {
 
   describe('when leaving a student', () => {
     it('must leave a student', async () => {
-      // TODO
+      const student = {
+        name: 'John Doe',
+        birth_date: new Date(15, 3, 2000).toISOString(),
+      };
+
+      const createdStudent = await service.create(student);
+
+      const response = await service.leave(
+        createdStudent.registration,
+      );
+
+      expect(response).toMatchObject({
+        ...student,
+        birth_date: expect.any(Date),
+        status: StudentStatus.ON_LEAVE
+      });
     });
 
     it('must return student not found', async () => {

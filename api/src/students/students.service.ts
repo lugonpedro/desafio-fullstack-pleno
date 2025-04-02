@@ -1,26 +1,88 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
+import { PrismaService } from 'src/@shared/prisma/prisma.service';
+import { randomInt } from 'crypto';
+import { StudentStatus } from '@prisma/client';
 
 @Injectable()
 export class StudentsService {
-  create(createStudentDto: CreateStudentDto) {
-    return 'This action adds a new student';
+  constructor(private prisma: PrismaService) {}
+
+  async create(data: CreateStudentDto) {
+    const now = new Date();
+    const randomFourDigit = randomInt(1000, 10000);
+
+    return this.prisma.student.create({
+      data: {
+        name: data.name,
+        birth_date: data.birth_date,
+        registration: `${now.getUTCFullYear()}${randomFourDigit}`,
+        status: data.status,
+        photo_id: data.photo_id,
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all students`;
+  async findAll() {
+    return this.prisma.student.findMany({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} student`;
+  async findOne(registration: string) {
+    return this.exists(registration);
   }
 
-  update(id: number, updateStudentDto: UpdateStudentDto) {
-    return `This action updates a #${id} student`;
+  async update(registration: string, data: UpdateStudentDto) {
+    await this.exists(registration);
+
+    return this.prisma.student.update({
+      where: { registration },
+      data: data,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} student`;
+  async activate(registration: string) {
+    await this.exists(registration);
+
+    return this.prisma.student.update({
+      where: { registration },
+      data: {
+        status: StudentStatus.ACTIVE,
+      },
+    });
+  }
+
+  async inactivate(registration: string) {
+    await this.exists(registration);
+
+    return this.prisma.student.update({
+      where: { registration },
+      data: {
+        status: StudentStatus.INACTIVE,
+      },
+    });
+  }
+
+  async leave(registration: string) {
+    await this.exists(registration);
+
+    return this.prisma.student.update({
+      where: { registration },
+      data: {
+        status: StudentStatus.ON_LEAVE,
+      },
+    });
+  }
+
+  async exists(registration: string) {
+    const student = await this.prisma.student.findUnique({
+      where: { registration },
+    });
+
+    if (!student) {
+      throw new HttpException('Student not found', HttpStatus.NOT_FOUND);
+    }
+
+    return student;
   }
 }

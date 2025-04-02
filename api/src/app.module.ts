@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { StudentsModule } from './students/students.module';
 import { DisciplinesModule } from './disciplines/disciplines.module';
 import { DepartmentsModule } from './departments/departments.module';
@@ -15,7 +13,7 @@ import { ImageModule } from './@shared/image/image.module';
     CoursesModule,
     ImageModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

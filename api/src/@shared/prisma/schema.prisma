@@ -26,9 +26,8 @@ model Student {
   updated_at DateTime @updatedAt
 
   name         String
-  age          String
+  birth_date   DateTime
   registration String        @unique
-  gpa          Float
   status       StudentStatus @default(INACTIVE)
   grade        Grade[]
   photo        Image?        @relation(fields: [photo_id], references: [id])
@@ -40,12 +39,12 @@ model Discipline {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  code      String  @unique
-  name      String
-  total_credits   Int
-  course    Course  @relation(fields: [course_id], references: [id])
-  course_id Int
-  grade     Grade[]
+  code          String     @unique
+  name          String
+  credits       Int
+  department    Department @relation(fields: [department_id], references: [id])
+  department_id Int
+  grade         Grade[]
 }
 
 model Grade {
@@ -56,20 +55,9 @@ model Grade {
   student_id    Int
   discipline    Discipline @relation(fields: [discipline_id], references: [id], onDelete: Cascade)
   discipline_id Int
-  credits       Int        @default(0)
+  done          Boolean    @default(false)
 
   @@id([student_id, discipline_id])
-}
-
-model Course {
-  id         Int      @id @default(autoincrement())
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-
-  name          String
-  discipline    Discipline[]
-  department    Department   @relation(fields: [department_id], references: [id], onDelete: Cascade)
-  department_id Int
 }
 
 model Department {
@@ -77,8 +65,19 @@ model Department {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  name    String
-  courses Course[]
+  name       String
+  discipline Discipline[]
+  course     Course       @relation(fields: [course_id], references: [id], onDelete: Cascade)
+  course_id  Int
+}
+
+model Course {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name       String
+  department Department[]
 }
 
 model Image {

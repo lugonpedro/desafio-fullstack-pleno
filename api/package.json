@@ -19,6 +19,7 @@
     "services:down": "docker compose down"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.779.0",
     "@nestjs/common": "^11.0.12",
     "@nestjs/core": "^11.0.12",
     "@nestjs/mapped-types": "*",
